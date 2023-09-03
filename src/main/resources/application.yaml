@@ -1,3 +1,17 @@
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/cnc
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+jks:
+  alias: cnc
+  password: password
+  location: classpath:cnc.jks
