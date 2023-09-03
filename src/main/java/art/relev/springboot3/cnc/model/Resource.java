@@ -23,9 +23,9 @@ public class Resource {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "资源ID")
     private Long id;
-    @Column(name = "f_type_name", nullable = false)
+    @Column(name = "f_resource_name", nullable = false)
     @Schema(description = "资源类型名称")
-    private String typeName;
+    private String resourceName;
     @ManyToOne
     @JoinColumn(name = "f_parent_resource_id")
     @Schema(description = "父级资源")

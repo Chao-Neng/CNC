@@ -23,8 +23,8 @@ public class ResourceParam {
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
-        @Schema(description = "资源类型名称")
-        private String typeName;
+        @Schema(description = "资源名称")
+        private String resourceName;
         @Schema(description = "页码")
         @Min(value = 1, message = "页码不能小于1")
         private Integer pageNumber = 1;
@@ -36,8 +36,8 @@ public class ResourceParam {
         public Predicate toPredicate(Root<Resource> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
             List<Predicate> predicateList = new ArrayList<>();
             predicateList.add(criteriaBuilder.equal(root.get("parentResource"), Resource.builder().id(resourceId).build()));
-            if (typeName != null) {
-                predicateList.add(criteriaBuilder.equal(root.get("typeName"), typeName));
+            if (resourceName != null) {
+                predicateList.add(criteriaBuilder.equal(root.get("resourceName"), resourceName));
             }
             return criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()]));
         }

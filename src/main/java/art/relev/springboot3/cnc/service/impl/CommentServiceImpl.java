@@ -25,10 +25,10 @@ public class CommentServiceImpl implements CommentService {
         if (parentResource == null) {
             throw new CNCException(ResultMessage.PARENT_RESOURCE_NOT_EXIST);
         }
-        if (!parentResource.getTypeName().equals("article")) {
+        if (!parentResource.getResourceName().equals("article")) {
             throw new CNCException(ResultMessage.PARENT_RESOURCE_NOT_MATCH);
         }
-        Resource resource = Resource.builder().typeName("comment").parentResource(parentResource).build();
+        Resource resource = Resource.builder().resourceName("comment").parentResource(parentResource).build();
         // TODO: temp resource ownerId
         try {
             if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User user && user.getResource() != null) {

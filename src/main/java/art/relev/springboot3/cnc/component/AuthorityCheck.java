@@ -73,7 +73,7 @@ public class AuthorityCheck {
         Resource resource = resourceDao.getResourceById(resourceId);
         Set<Long> ownerIdSet = new HashSet<>();
         while (resource != null) {
-            if (applicationContext.getBean(resource.getTypeName() + "Dao") instanceof CNCDao<?> dao) {
+            if (applicationContext.getBean(resource.getResourceName() + "Dao") instanceof CNCDao<?> dao) {
                 if (dao.getReferenceById(resource.getId()) instanceof CNCResource cncResource) {
                     if (cncResource.getResource().getOwnerIdSet() != null) {
                         ownerIdSet.addAll(cncResource.getResource().getOwnerIdSet());

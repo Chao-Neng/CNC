@@ -27,11 +27,11 @@ public class ChunkServiceImpl implements ChunkService {
             if (parentResource == null) {
                 throw new CNCException(ResultMessage.PARENT_RESOURCE_NOT_EXIST);
             }
-            if (!parentResource.getTypeName().equals("chunk")) {
+            if (!parentResource.getResourceName().equals("chunk")) {
                 throw new CNCException(ResultMessage.PARENT_RESOURCE_NOT_MATCH);
             }
         }
-        Resource resource = Resource.builder().typeName("chunk").parentResource(parentResource).build();
+        Resource resource = Resource.builder().resourceName("chunk").parentResource(parentResource).build();
         // TODO: temp resource ownerId
         try {
             if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User user && user.getResource() != null) {

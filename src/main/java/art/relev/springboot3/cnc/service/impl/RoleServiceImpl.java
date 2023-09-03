@@ -17,7 +17,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role create(RoleParam.Create param) {
-        Resource resource = Resource.builder().typeName("Role").build();
+        Resource resource = Resource.builder().resourceName("role").build();
         // TODO: temp resource ownerId
         try {
             if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User user && user.getResource() != null) {

@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         String token = jwtService.encode(map);
         // TODO: 缓存 token 键过长的情况
         //          过期时间不准确
-        redisTemplate.opsForValue().set("TOKEN_" + token, user.getResource().getTypeName(), 1, TimeUnit.DAYS);
+        redisTemplate.opsForValue().set("TOKEN_" + token, user.getResource().getResourceName(), 1, TimeUnit.DAYS);
         return token;
     }
 
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
         if (user != null) {
             throw new CNCException(ResultMessage.USER_EXIST_ERROR);
         }
-        Resource resource = Resource.builder().typeName("user").build();
+        Resource resource = Resource.builder().resourceName("user").build();
         user = User.builder().resource(resource).name(param.getName()).password(passwordEncoder.encode(param.getPassword())).build();
         userDao.save(user);
         resource.getOwnerIdSet().add(resource.getId());

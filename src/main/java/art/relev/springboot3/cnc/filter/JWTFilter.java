@@ -33,8 +33,8 @@ public class JWTFilter extends OncePerRequestFilter {
         User user = User.builder().build();
         String token = request.getHeader(TOKEN);
         SignedJWT jwt = jwtService.parse(token);
-        if (jwt != null && jwtService.get(jwt, "userResource") instanceof Map map && map.get("id") instanceof Long id && map.get("typeName") instanceof String typeName && typeName.equals(redisTemplate.opsForValue().get("TOKEN_" + token))) {
-            Resource resource = Resource.builder().id(id).typeName(typeName).build();
+        if (jwt != null && jwtService.get(jwt, "userResource") instanceof Map map && map.get("id") instanceof Long id && map.get("resourceName") instanceof String resourceName && resourceName.equals(redisTemplate.opsForValue().get("TOKEN_" + token))) {
+            Resource resource = Resource.builder().id(id).resourceName(resourceName).build();
             user.setResource(resource);
         } else {
             response.setHeader(TOKEN, "");
