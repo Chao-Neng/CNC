@@ -15,7 +15,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "t_authority")
+@Table(name = "t_authority", uniqueConstraints = @UniqueConstraint(columnNames = {"f_name", "f_resource_name"}))
 @Schema(description = "权限")
 public class Authority {
     @Id
@@ -23,7 +23,6 @@ public class Authority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "权限ID")
     private Long id;
-    // TODO: 唯一约束
     @Column(name = "f_name", nullable = false)
     @Schema(description = "权限名称")
     private String name;
@@ -33,7 +32,6 @@ public class Authority {
     @Column(name = "f_allow_owner")
     @Schema(description = "允许资源所属者")
     private Boolean allowOwner;
-    // TODO: 黑名单可能存在问题 user role list 可能存在冲突
     @Column(name = "f_black_list_mode")
     @Schema(description = "黑名单模式")
     private Boolean blackListMode;
