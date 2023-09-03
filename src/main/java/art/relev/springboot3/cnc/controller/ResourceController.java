@@ -24,9 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ResourceController {
     private final ResourceService resourceService;
 
-    // TODO: 排序
     @PostMapping("/queryChild")
-    @PreAuthorize("@authorityCheck.check(#param, 'resource', 'queryChild', false, true)")
+    @PreAuthorize("@authorityCheck.check(#param, false, true)")
     @Operation(summary = "查询子级资源", description = "查询子级资源", operationId = "queryChildResource", security = {@SecurityRequirement(name = "token")})
     public Result<Page<Resource>> queryChild(@RequestBody @Validated ResourceParam.QueryChild param) {
         Page<Resource> resourcePage = resourceService.queryChild(param);

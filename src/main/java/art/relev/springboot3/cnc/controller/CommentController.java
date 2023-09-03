@@ -24,7 +24,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/create")
-    @PreAuthorize("@authorityCheck.check(#param, 'comment', 'create', false, true)")
+    @PreAuthorize("@authorityCheck.check(#param, false, true)")
     @Operation(summary = "创建评论", description = "创建评论", operationId = "createComment", security = {@SecurityRequirement(name = "token")})
     public Result<Comment> create(@RequestBody @Validated CommentParam.Create param) {
         Comment comment = commentService.create(param);
@@ -32,7 +32,7 @@ public class CommentController {
     }
 
     @PostMapping("/delete")
-    @PreAuthorize("@authorityCheck.check(#param, 'comment', 'delete', true, false)")
+    @PreAuthorize("@authorityCheck.check(#param, true, false)")
     @Operation(summary = "删除评论", description = "删除评论", operationId = "deleteComment", security = {@SecurityRequirement(name = "token")})
     public Result<?> delete(@RequestBody @Validated CommentParam.Delete param) {
         commentService.delete(param);
@@ -40,7 +40,7 @@ public class CommentController {
     }
 
     @PostMapping("/update")
-    @PreAuthorize("@authorityCheck.check(#param, 'comment', 'update', true, false)")
+    @PreAuthorize("@authorityCheck.check(#param, true, false)")
     @Operation(summary = "修改评论", description = "修改评论", operationId = "updateComment", security = {@SecurityRequirement(name = "token")})
     public Result<Comment> update(@RequestBody @Validated CommentParam.Update param) {
         Comment comment = commentService.update(param);
@@ -48,7 +48,7 @@ public class CommentController {
     }
 
     @PostMapping("/query")
-    @PreAuthorize("@authorityCheck.check(#param, 'comment', 'query', false, true)")
+    @PreAuthorize("@authorityCheck.check(#param, false, true)")
     @Operation(summary = "查询评论", description = "查询评论", operationId = "queryComment", security = {@SecurityRequirement(name = "token")})
     public Result<Comment> query(@RequestBody @Validated CommentParam.Query param) {
         Comment comment = commentService.query(param);

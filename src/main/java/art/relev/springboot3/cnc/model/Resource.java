@@ -18,6 +18,7 @@ import java.util.Set;
 @Table(name = "t_resource")
 @Schema(description = "资源")
 public class Resource {
+    public static final String RESOURCE_NAME = "resource";
     @Id
     @Column(name = "f_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

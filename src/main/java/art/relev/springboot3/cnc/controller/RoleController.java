@@ -24,7 +24,7 @@ public class RoleController {
     private final RoleService roleService;
 
     @PostMapping("/create")
-    @PreAuthorize("@authorityCheck.check(#param, 'role', 'create', false, false)")
+    @PreAuthorize("@authorityCheck.check(#param, false, false)")
     @Operation(summary = "创建角色", description = "创建角色", operationId = "createRole", security = {@SecurityRequirement(name = "token")})
     public Result<Role> create(@RequestBody @Validated RoleParam.Create param) {
         Role role = roleService.create(param);
@@ -32,7 +32,7 @@ public class RoleController {
     }
 
     @PostMapping("/delete")
-    @PreAuthorize("@authorityCheck.check(#param, 'role', 'delete', false, false)")
+    @PreAuthorize("@authorityCheck.check(#param, false, false)")
     @Operation(summary = "删除角色", description = "删除角色", operationId = "deleteRole", security = {@SecurityRequirement(name = "token")})
     public Result<?> delete(@RequestBody @Validated RoleParam.Delete param) {
         roleService.delete(param);
@@ -40,7 +40,7 @@ public class RoleController {
     }
 
     @PostMapping("/update")
-    @PreAuthorize("@authorityCheck.check(#param, 'role', 'update', false, false)")
+    @PreAuthorize("@authorityCheck.check(#param, false, false)")
     @Operation(summary = "修改角色", description = "修改角色", operationId = "updateRole", security = {@SecurityRequirement(name = "token")})
     public Result<Role> update(@RequestBody @Validated RoleParam.Update param) {
         Role role = roleService.update(param);
@@ -48,7 +48,7 @@ public class RoleController {
     }
 
     @PostMapping("/query")
-    @PreAuthorize("@authorityCheck.check(#param, 'role', 'query', false, false)")
+    @PreAuthorize("@authorityCheck.check(#param, false, false)")
     @Operation(summary = "查询角色", description = "查询角色", operationId = "queryChunk", security = {@SecurityRequirement(name = "token")})
     public Result<Role> query(@RequestBody @Validated RoleParam.Query param) {
         Role role = roleService.query(param);

@@ -24,7 +24,7 @@ public class ChunkController {
     private final ChunkService chunkService;
 
     @PostMapping("/create")
-    @PreAuthorize("@authorityCheck.check(#param, 'chunk', 'create', false, true)")
+    @PreAuthorize("@authorityCheck.check(#param, false, true)")
     @Operation(summary = "创建板块", description = "创建板块", operationId = "createChunk", security = {@SecurityRequirement(name = "token")})
     public Result<Chunk> create(@RequestBody @Validated ChunkParam.Create param) {
         Chunk chunk = chunkService.create(param);
@@ -32,7 +32,7 @@ public class ChunkController {
     }
 
     @PostMapping("/delete")
-    @PreAuthorize("@authorityCheck.check(#param, 'chunk', 'delete', true, false)")
+    @PreAuthorize("@authorityCheck.check(#param, true, false)")
     @Operation(summary = "删除板块", description = "删除板块", operationId = "deleteChunk", security = {@SecurityRequirement(name = "token")})
     public Result<?> delete(@RequestBody @Validated ChunkParam.Delete param) {
         chunkService.delete(param);
@@ -40,7 +40,7 @@ public class ChunkController {
     }
 
     @PostMapping("/update")
-    @PreAuthorize("@authorityCheck.check(#param, 'chunk', 'update', true, false)")
+    @PreAuthorize("@authorityCheck.check(#param, true, false)")
     @Operation(summary = "修改板块", description = "修改板块", operationId = "updateChunk", security = {@SecurityRequirement(name = "token")})
     public Result<Chunk> update(@RequestBody @Validated ChunkParam.Update param) {
         Chunk chunk = chunkService.update(param);
@@ -48,7 +48,7 @@ public class ChunkController {
     }
 
     @PostMapping("/query")
-    @PreAuthorize("@authorityCheck.check(#param, 'chunk', 'query', false, true)")
+    @PreAuthorize("@authorityCheck.check(#param, false, true)")
     @Operation(summary = "查询板块", description = "查询板块", operationId = "queryChunk", security = {@SecurityRequirement(name = "token")})
     public Result<Chunk> query(@RequestBody @Validated ChunkParam.Query param) {
         Chunk chunk = chunkService.query(param);

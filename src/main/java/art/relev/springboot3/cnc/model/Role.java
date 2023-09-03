@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "t_role")
 @Schema(description = "角色")
 public class Role implements CNCResource {
+    public static final String RESOURCE_NAME = "role";
     @Id
     @Schema(description = "角色ID")
     private Long id;

@@ -24,7 +24,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping("/create")
-    @PreAuthorize("@authorityCheck.check(#param, 'article', 'create', false, true)")
+    @PreAuthorize("@authorityCheck.check(#param, false, true)")
     @Operation(summary = "创建文章", description = "创建文章", operationId = "createArticle", security = {@SecurityRequirement(name = "token")})
     public Result<Article> create(@RequestBody @Validated ArticleParam.Create param) {
         Article article = articleService.create(param);
@@ -32,7 +32,7 @@ public class ArticleController {
     }
 
     @PostMapping("/delete")
-    @PreAuthorize("@authorityCheck.check(#param, 'article', 'delete', true, false)")
+    @PreAuthorize("@authorityCheck.check(#param, true, false)")
     @Operation(summary = "删除文章", description = "删除文章", operationId = "deleteArticle", security = {@SecurityRequirement(name = "token")})
     public Result<?> delete(@RequestBody @Validated ArticleParam.Delete param) {
         articleService.delete(param);
@@ -40,7 +40,7 @@ public class ArticleController {
     }
 
     @PostMapping("/update")
-    @PreAuthorize("@authorityCheck.check(#param, 'article', 'update', true, false)")
+    @PreAuthorize("@authorityCheck.check(#param, true, false)")
     @Operation(summary = "修改文章", description = "修改文章", operationId = "updateArticle", security = {@SecurityRequirement(name = "token")})
     public Result<Article> update(@RequestBody @Validated ArticleParam.Update param) {
         Article article = articleService.update(param);
@@ -48,7 +48,7 @@ public class ArticleController {
     }
 
     @PostMapping("/query")
-    @PreAuthorize("@authorityCheck.check(#param, 'article', 'query', false, true)")
+    @PreAuthorize("@authorityCheck.check(#param, false, true)")
     @Operation(summary = "查询文章", description = "查询文章", operationId = "queryArticle", security = {@SecurityRequirement(name = "token")})
     public Result<Article> query(@RequestBody @Validated ArticleParam.Query param) {
         Article article = articleService.query(param);

@@ -17,9 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResourceParam {
+    private static final String RESOURCE_NAME = Resource.RESOURCE_NAME;
+
     @Data
     @Schema(name = "QueryChildResourceParam", description = "查询子级资源参数")
     public static class QueryChild implements CNCParam, Specification<Resource> {
+        private static final String AUTHORITY_NAME = "queryChild";
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
@@ -40,6 +43,17 @@ public class ResourceParam {
                 predicateList.add(criteriaBuilder.equal(root.get("resourceName"), resourceName));
             }
             return criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()]));
+        }
+
+        @Override
+        @JsonIgnore
+        public String getAuthorityName() {
+            return AUTHORITY_NAME;
+        }
+
+        @Override
+        public String getResourceName() {
+            return RESOURCE_NAME;
         }
 
         @Override

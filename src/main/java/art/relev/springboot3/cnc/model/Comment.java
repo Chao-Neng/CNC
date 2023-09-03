@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "t_comment")
 @Schema(description = "评论")
 public class Comment implements CNCResource {
+    public static final String RESOURCE_NAME = "comment";
     @Id
     @Schema(description = "评论ID")
     private Long id;

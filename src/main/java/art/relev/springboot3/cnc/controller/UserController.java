@@ -26,7 +26,7 @@ public class UserController {
     private final String TOKEN = "TOKEN";
 
     @PostMapping("/login")
-    @PreAuthorize("@authorityCheck.check(#param, 'user', 'login', false, true)")
+    @PreAuthorize("@authorityCheck.check(#param, false, true)")
     @Operation(summary = "登录用户", description = "登录用户", operationId = "loginUser", security = {@SecurityRequirement(name = "token")})
     public Result<?> login(@RequestBody @Validated UserParam.Login param, HttpServletResponse response) {
         String token = userService.login(param);
@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    @PreAuthorize("@authorityCheck.check(#param, 'user', 'register', false, true)")
+    @PreAuthorize("@authorityCheck.check(#param, false, true)")
     @Operation(summary = "注册用户", description = "注册用户", operationId = "registerUser", security = {@SecurityRequirement(name = "token")})
     public Result<?> register(@RequestBody @Validated UserParam.Register param, HttpServletResponse response) {
         String token = userService.register(param);
@@ -44,9 +44,9 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    @PreAuthorize("@authorityCheck.check(#param, 'user', 'logout', false, true)")
+    @PreAuthorize("@authorityCheck.check(#param, false, true)")
     @Operation(summary = "登出用户", description = "登出用户", operationId = "logoutUser", security = {@SecurityRequirement(name = "token")})
-    public Result<?> logout(HttpServletRequest request, HttpServletResponse response) {
+    public Result<?> logout(@RequestBody @Validated UserParam.Logout param, HttpServletRequest request, HttpServletResponse response) {
         String token = request.getHeader(TOKEN);
         userService.logout(token);
         response.setHeader(TOKEN, "");

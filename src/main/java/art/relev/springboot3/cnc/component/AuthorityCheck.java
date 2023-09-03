@@ -28,14 +28,16 @@ public class AuthorityCheck {
     private final AuthorityDao authorityDao;
     private final ApplicationContext applicationContext;
 
-    public boolean check(Object paramObject, Object resourceNameObject, Object nameObject, Object defaultAllowOwnerObject, Object defaultBlackListModeObject) {
+    public boolean check(Object paramObject, Object defaultAllowOwnerObject, Object defaultBlackListModeObject) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication.getPrincipal() instanceof User user && paramObject instanceof CNCParam param && resourceNameObject instanceof String resourceName && nameObject instanceof String name && defaultAllowOwnerObject instanceof Boolean defaultAllowOwner && defaultBlackListModeObject instanceof Boolean defaultBlackListMode)) {
+        if (!(authentication.getPrincipal() instanceof User user && paramObject instanceof CNCParam param && defaultAllowOwnerObject instanceof Boolean defaultAllowOwner && defaultBlackListModeObject instanceof Boolean defaultBlackListMode)) {
             return false;
         }
-        Authority authority = authorityDao.getAuthorityByName(name);
+        String authorityName = param.getAuthorityName();
+        String resourceName = param.getResourceName();
+        Authority authority = authorityDao.getAuthorityByName(authorityName);
         if (authority == null) {
-            authority = Authority.builder().name(name).resourceName(resourceName).allowOwner(defaultAllowOwner).blackListMode(defaultBlackListMode).build();
+            authority = Authority.builder().name(authorityName).resourceName(resourceName).allowOwner(defaultAllowOwner).blackListMode(defaultBlackListMode).build();
             authorityDao.save(authority);
         }
         for (Role item : authority.getRoleSet()) {
@@ -50,18 +52,13 @@ public class AuthorityCheck {
         }
         if (authority.getAllowOwner()) {
             try {
-                Boolean result = null;
-                if (param.getResourceId() != null) {
-                    result = checkResource(resourceName, param.getResourceId(), user.getResource().getId());
-                } else if (param.getParentResourceId() != null) {
-                    String allClassName = param.getClass().getName().split("Param\\$")[0];
-                    int dotIndex = allClassName.lastIndexOf(".");
-                    allClassName = allClassName.substring(0, dotIndex - "param".length()) + "model" + allClassName.substring(dotIndex);
-                    String className = Class.forName(allClassName).getMethod("getParentResource").getReturnType().getSimpleName();
-                    result = checkResource(className, param.getParentResourceId(), user.getResource().getId());
+                Long resourceId = param.getResourceId();
+                if (resourceId == null) {
+                    resourceId = param.getParentResourceId();
                 }
-                if (result != null) {
-                    return result;
+                if (resourceId != null) {
+                    Boolean result = checkResource(resourceId, user.getResource().getId());
+                    return (result != null) && result;
                 }
             } catch (Exception ignore) {
             }
@@ -69,20 +66,20 @@ public class AuthorityCheck {
         return false;
     }
 
-    private Boolean checkResource(String resourceName, Long resourceId, Long userResourceId) {
+    private Boolean checkResource(Long resourceId, Long userResourceId) {
         Resource resource = resourceDao.getResourceById(resourceId);
-        Set<Long> ownerIdSet = new HashSet<>();
+        Set<Long> ownerResourceIdSet = new HashSet<>();
         while (resource != null) {
             if (applicationContext.getBean(resource.getResourceName() + "Dao") instanceof CNCDao<?> dao) {
                 if (dao.getReferenceById(resource.getId()) instanceof CNCResource cncResource) {
                     if (cncResource.getResource().getOwnerIdSet() != null) {
-                        ownerIdSet.addAll(cncResource.getResource().getOwnerIdSet());
+                        ownerResourceIdSet.addAll(cncResource.getResource().getOwnerIdSet());
                     }
                     resource = cncResource.getResource().getParentResource();
                 }
             }
         }
-        for (Long ownerResourceId : ownerIdSet) {
+        for (Long ownerResourceId : ownerResourceIdSet) {
             if (Objects.equals(ownerResourceId, userResourceId)) {
                 return true;
             }

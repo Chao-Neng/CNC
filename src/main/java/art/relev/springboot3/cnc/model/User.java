@@ -20,6 +20,7 @@ import java.util.Set;
 @Table(name = "t_user")
 @Schema(description = "用户")
 public class User implements CNCResource {
+    public static final String RESOURCE_NAME = "user";
     @Id
     @Schema(description = "用户ID")
     private Long id;
