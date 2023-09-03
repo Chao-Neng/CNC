@@ -12,8 +12,8 @@ public enum ResultMessage {
     USER_NOT_EXIST_ERROR(29001, "用户不存在"),
     USER_EXIST_ERROR(29002, "用户已存在"),
     USER_PASSWORD_ERROR(29003, "用户密码错误");
-    private Integer code;
-    private String message;
+    private final Integer code;
+    private final String message;
 
     ResultMessage(Integer code, String message) {
         this.code = code;
