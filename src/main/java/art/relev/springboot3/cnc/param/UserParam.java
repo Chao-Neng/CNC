@@ -9,10 +9,25 @@ import lombok.Data;
 
 public class UserParam {
     private static final String RESOURCE_NAME = User.RESOURCE_NAME;
+    private static final String[] PARENT_RESOURCE_NAME_LIST = User.PARENT_RESOURCE_NAME_LIST;
+
+    private static abstract class AbstractParam implements CNCParam {
+        @Override
+        @JsonIgnore
+        public String getResourceName() {
+            return RESOURCE_NAME;
+        }
+
+        @Override
+        @JsonIgnore
+        public String[] getParentResourceNameList() {
+            return PARENT_RESOURCE_NAME_LIST;
+        }
+    }
 
     @Data
     @Schema(name = "LoginUserParam", description = "登录用户参数")
-    public static class Login implements CNCParam {
+    public static class Login extends AbstractParam {
         private static final String AUTHORITY_NAME = "login";
         @Schema(description = "用户名称")
         @NotBlank(message = "用户名不能为空")
@@ -25,12 +40,6 @@ public class UserParam {
         @JsonIgnore
         public Long getResourceId() {
             return null;
-        }
-
-        @Override
-        @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
         }
 
         @Override
@@ -48,7 +57,7 @@ public class UserParam {
 
     @Data
     @Schema(name = "RegisterUserParam", description = "注册用户参数")
-    public static class Register implements CNCParam {
+    public static class Register extends AbstractParam {
         private static final String AUTHORITY_NAME = "register";
         @Schema(description = "用户名称")
         @NotBlank(message = "用户名不能为空")
@@ -65,12 +74,6 @@ public class UserParam {
 
         @Override
         @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
-
-        @Override
-        @JsonIgnore
         public String getAuthorityName() {
             return AUTHORITY_NAME;
         }
@@ -83,20 +86,14 @@ public class UserParam {
     }
 
     @Data
-    @Schema(name = "LogoutUserParam", description = "注册用户参数")
-    public static class Logout implements CNCParam {
-        private static final String AUTHORITY_NAME = "register";
+    @Schema(name = "LogoutUserParam", description = "登出用户参数")
+    public static class Logout extends AbstractParam {
+        private static final String AUTHORITY_NAME = "logout";
 
         @Override
         @JsonIgnore
         public Long getResourceId() {
             return null;
-        }
-
-        @Override
-        @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
         }
 
         @Override

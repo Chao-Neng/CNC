@@ -21,6 +21,7 @@ import java.util.Set;
 @Schema(description = "用户")
 public class User implements CNCResource {
     public static final String RESOURCE_NAME = "user";
+    public static final String[] PARENT_RESOURCE_NAME_LIST = new String[]{null};
     @Id
     @Schema(description = "用户ID")
     private Long id;

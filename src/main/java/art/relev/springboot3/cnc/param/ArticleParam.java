@@ -11,10 +11,25 @@ import org.hibernate.validator.constraints.Length;
 
 public class ArticleParam {
     private static final String RESOURCE_NAME = Article.RESOURCE_NAME;
+    private static final String[] PARENT_RESOURCE_NAME_LIST = Article.PARENT_RESOURCE_NAME_LIST;
+
+    private static abstract class AbstractParam implements CNCParam {
+        @Override
+        @JsonIgnore
+        public String getResourceName() {
+            return RESOURCE_NAME;
+        }
+
+        @Override
+        @JsonIgnore
+        public String[] getParentResourceNameList() {
+            return PARENT_RESOURCE_NAME_LIST;
+        }
+    }
 
     @Data
     @Schema(name = "CreateArticleParam", description = "创建文章参数")
-    public static class Create implements CNCParam {
+    public static class Create extends AbstractParam {
         private static final String AUTHORITY_NAME = "create";
         @NotBlank(message = "文章标题不能为空")
         @Length(max = 64, message = "文章标题长度超过64")
@@ -35,12 +50,6 @@ public class ArticleParam {
 
         @Override
         @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
-
-        @Override
-        @JsonIgnore
         public String getAuthorityName() {
             return AUTHORITY_NAME;
         }
@@ -48,17 +57,11 @@ public class ArticleParam {
 
     @Data
     @Schema(name = "DeleteArticleParam", description = "删除文章参数")
-    public static class Delete implements CNCParam {
+    public static class Delete extends AbstractParam {
         private static final String AUTHORITY_NAME = "delete";
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
-
-        @Override
-        @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
 
         @Override
         @JsonIgnore
@@ -75,7 +78,7 @@ public class ArticleParam {
 
     @Data
     @Schema(name = "UpdateArticleParam", description = "修改文章参数")
-    public static class Update implements CNCParam {
+    public static class Update extends AbstractParam {
         private static final String AUTHORITY_NAME = "update";
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
@@ -87,12 +90,6 @@ public class ArticleParam {
         @NotBlank(message = "文章内容不能为空")
         @Schema(description = "文章内容")
         private String content;
-
-        @Override
-        @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
 
         @Override
         @JsonIgnore
@@ -109,17 +106,11 @@ public class ArticleParam {
 
     @Data
     @Schema(name = "QueryArticleParam", description = "查询文章参数")
-    public static class Query implements CNCParam {
+    public static class Query extends AbstractParam {
         private static final String AUTHORITY_NAME = "query";
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
-
-        @Override
-        @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
 
         @Override
         @JsonIgnore

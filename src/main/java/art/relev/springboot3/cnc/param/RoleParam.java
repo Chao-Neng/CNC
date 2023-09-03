@@ -11,10 +11,25 @@ import org.hibernate.validator.constraints.Length;
 
 public class RoleParam {
     private static final String RESOURCE_NAME = Role.RESOURCE_NAME;
+    private static final String[] PARENT_RESOURCE_NAME_LIST = Role.PARENT_RESOURCE_NAME_LIST;
+
+    private static abstract class AbstractParam implements CNCParam {
+        @Override
+        @JsonIgnore
+        public String getResourceName() {
+            return RESOURCE_NAME;
+        }
+
+        @Override
+        @JsonIgnore
+        public String[] getParentResourceNameList() {
+            return PARENT_RESOURCE_NAME_LIST;
+        }
+    }
 
     @Data
     @Schema(name = "CreateRoleParam", description = "创建角色参数")
-    public static class Create implements CNCParam {
+    public static class Create extends AbstractParam {
         private static final String AUTHORITY_NAME = "create";
         @NotBlank(message = "角色名称不能为空")
         @Length(max = 64, message = "角色名称长度超过64")
@@ -25,12 +40,6 @@ public class RoleParam {
         @JsonIgnore
         public Long getResourceId() {
             return null;
-        }
-
-        @Override
-        @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
         }
 
         @Override
@@ -48,17 +57,11 @@ public class RoleParam {
 
     @Data
     @Schema(name = "DeleteRoleParam", description = "删除角色参数")
-    public static class Delete implements CNCParam {
+    public static class Delete extends AbstractParam {
         private static final String AUTHORITY_NAME = "delete";
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
-
-        @Override
-        @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
 
         @Override
         @JsonIgnore
@@ -75,7 +78,7 @@ public class RoleParam {
 
     @Data
     @Schema(name = "UpdateRoleParam", description = "修改角色参数")
-    public static class Update implements CNCParam {
+    public static class Update extends AbstractParam {
         private static final String AUTHORITY_NAME = "update";
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
@@ -84,12 +87,6 @@ public class RoleParam {
         @Length(max = 64, message = "角色名称长度超过64")
         @Schema(description = "角色名称")
         private String name;
-
-        @Override
-        @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
 
         @Override
         @JsonIgnore
@@ -106,17 +103,11 @@ public class RoleParam {
 
     @Data
     @Schema(name = "QueryRoleParam", description = "查询角色参数")
-    public static class Query implements CNCParam {
+    public static class Query extends AbstractParam {
         private static final String AUTHORITY_NAME = "query";
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
-
-        @Override
-        @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
 
         @Override
         @JsonIgnore

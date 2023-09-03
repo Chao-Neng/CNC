@@ -11,10 +11,25 @@ import org.hibernate.validator.constraints.Length;
 
 public class ChunkParam {
     private static final String RESOURCE_NAME = Chunk.RESOURCE_NAME;
+    private static final String[] PARENT_RESOURCE_NAME_LIST = Chunk.PARENT_RESOURCE_NAME_LIST;
+
+    private static abstract class AbstractParam implements CNCParam {
+        @Override
+        @JsonIgnore
+        public String getResourceName() {
+            return RESOURCE_NAME;
+        }
+
+        @Override
+        @JsonIgnore
+        public String[] getParentResourceNameList() {
+            return PARENT_RESOURCE_NAME_LIST;
+        }
+    }
 
     @Data
     @Schema(name = "CreateChunkParam", description = "创建板块参数")
-    public static class Create implements CNCParam {
+    public static class Create extends AbstractParam {
         private static final String AUTHORITY_NAME = "create";
         @NotBlank(message = "板块名称不能为空")
         @Length(max = 64, message = "板块名称长度超过64")
@@ -34,12 +49,6 @@ public class ChunkParam {
 
         @Override
         @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
-
-        @Override
-        @JsonIgnore
         public String getAuthorityName() {
             return AUTHORITY_NAME;
         }
@@ -47,19 +56,11 @@ public class ChunkParam {
 
     @Data
     @Schema(name = "DeleteChunkParam", description = "删除板块参数")
-    public static class Delete implements CNCParam {
+    public static class Delete extends AbstractParam {
         private static final String AUTHORITY_NAME = "delete";
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
-        @Schema(description = "板块名称")
-        private String name;
-
-        @Override
-        @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
 
         @Override
         @JsonIgnore
@@ -76,7 +77,7 @@ public class ChunkParam {
 
     @Data
     @Schema(name = "UpdateChunkParam", description = "修改板块参数")
-    public static class Update implements CNCParam {
+    public static class Update extends AbstractParam {
         private static final String AUTHORITY_NAME = "update";
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
@@ -85,12 +86,6 @@ public class ChunkParam {
         private String name;
         @Schema(description = "板块描述")
         private String description;
-
-        @Override
-        @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
 
         @Override
         @JsonIgnore
@@ -107,17 +102,11 @@ public class ChunkParam {
 
     @Data
     @Schema(name = "QueryChunkParam", description = "查询板块参数")
-    public static class Query implements CNCParam {
+    public static class Query extends AbstractParam {
         private static final String AUTHORITY_NAME = "query";
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
-
-        @Override
-        @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
 
         @Override
         @JsonIgnore

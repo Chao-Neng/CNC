@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Schema(description = "板块")
 public class Chunk implements CNCResource {
     public static final String RESOURCE_NAME = "chunk";
+    public static final String[] PARENT_RESOURCE_NAME_LIST = new String[]{null, "chunk"};
     @Id
     @Schema(description = "板块ID")
     private Long id;

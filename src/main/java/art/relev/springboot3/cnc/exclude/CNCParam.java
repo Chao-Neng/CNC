@@ -8,4 +8,6 @@ public interface CNCParam {
     String getAuthorityName();
 
     Long getParentResourceId();
+
+    String[] getParentResourceNameList();
 }

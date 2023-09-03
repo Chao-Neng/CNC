@@ -18,10 +18,24 @@ import java.util.List;
 
 public class ResourceParam {
     private static final String RESOURCE_NAME = Resource.RESOURCE_NAME;
+    private static final String[] PARENT_RESOURCE_NAME_LIST = new String[0];
+
+    private static abstract class AbstractParam implements CNCParam {
+        @Override
+        public String getResourceName() {
+            return RESOURCE_NAME;
+        }
+
+        @Override
+        @JsonIgnore
+        public String[] getParentResourceNameList() {
+            return PARENT_RESOURCE_NAME_LIST;
+        }
+    }
 
     @Data
     @Schema(name = "QueryChildResourceParam", description = "查询子级资源参数")
-    public static class QueryChild implements CNCParam, Specification<Resource> {
+    public static class QueryChild extends AbstractParam implements Specification<Resource> {
         private static final String AUTHORITY_NAME = "queryChild";
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
@@ -49,11 +63,6 @@ public class ResourceParam {
         @JsonIgnore
         public String getAuthorityName() {
             return AUTHORITY_NAME;
-        }
-
-        @Override
-        public String getResourceName() {
-            return RESOURCE_NAME;
         }
 
         @Override
