@@ -1,5 +1,6 @@
 package art.relev.springboot3.cnc.param;
 
+import art.relev.springboot3.cnc.exclude.CNCCreateParam;
 import art.relev.springboot3.cnc.exclude.CNCParam;
 import art.relev.springboot3.cnc.model.Chunk;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,25 +12,19 @@ import org.hibernate.validator.constraints.Length;
 
 public class ChunkParam {
     private static final String RESOURCE_NAME = Chunk.RESOURCE_NAME;
-    private static final String[] PARENT_RESOURCE_NAME_LIST = Chunk.PARENT_RESOURCE_NAME_LIST;
+    private static final String[] PARENT_RESOURCE_NAME_ARRAY = Chunk.PARENT_RESOURCE_NAME_ARRAY;
 
+    @Data
     private static abstract class AbstractParam implements CNCParam {
-        @Override
         @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
-
-        @Override
+        private String resourceName = RESOURCE_NAME;
         @JsonIgnore
-        public String[] getParentResourceNameList() {
-            return PARENT_RESOURCE_NAME_LIST;
-        }
+        private String[] parentResourceNameArray = PARENT_RESOURCE_NAME_ARRAY;
     }
 
     @Data
     @Schema(name = "CreateChunkParam", description = "创建板块参数")
-    public static class Create extends AbstractParam {
+    public static class Create extends AbstractParam implements CNCCreateParam {
         private static final String AUTHORITY_NAME = "create";
         @NotBlank(message = "板块名称不能为空")
         @Length(max = 64, message = "板块名称长度超过64")
@@ -40,45 +35,27 @@ public class ChunkParam {
         private String description;
         @Schema(description = "父级资源ID")
         private Long parentResourceId;
-
-        @Override
         @JsonIgnore
-        public Long getResourceId() {
-            return null;
-        }
-
-        @Override
-        @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
+        private String authorityName = AUTHORITY_NAME;
     }
 
     @Data
     @Schema(name = "DeleteChunkParam", description = "删除板块参数")
     public static class Delete extends AbstractParam {
         private static final String AUTHORITY_NAME = "delete";
+        @JsonIgnore(value = false)
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
-
-        @Override
         @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
-
-        @Override
-        @JsonIgnore
-        public Long getParentResourceId() {
-            return null;
-        }
+        private String authorityName = AUTHORITY_NAME;
     }
 
     @Data
     @Schema(name = "UpdateChunkParam", description = "修改板块参数")
     public static class Update extends AbstractParam {
         private static final String AUTHORITY_NAME = "update";
+        @JsonIgnore(value = false)
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
@@ -86,38 +63,19 @@ public class ChunkParam {
         private String name;
         @Schema(description = "板块描述")
         private String description;
-
-        @Override
         @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
-
-        @Override
-        @JsonIgnore
-        public Long getParentResourceId() {
-            return null;
-        }
+        private String authorityName = AUTHORITY_NAME;
     }
 
     @Data
     @Schema(name = "QueryChunkParam", description = "查询板块参数")
     public static class Query extends AbstractParam {
         private static final String AUTHORITY_NAME = "query";
+        @JsonIgnore(value = false)
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
-
-        @Override
         @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
-
-        @Override
-        @JsonIgnore
-        public Long getParentResourceId() {
-            return null;
-        }
+        private String authorityName = AUTHORITY_NAME;
     }
 }

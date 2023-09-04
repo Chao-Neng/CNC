@@ -7,6 +7,9 @@ import art.relev.springboot3.cnc.param.RoleParam;
 import art.relev.springboot3.cnc.service.ResourceService;
 import art.relev.springboot3.cnc.service.RoleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +19,7 @@ public class RoleServiceImpl implements RoleService {
     private final ResourceService resourceService;
 
     @Override
+    @CachePut(value = Role.RESOURCE_NAME, key = "#result.resource.id")
     public Role create(RoleParam.Create param) {
         Resource resource = resourceService.from(param);
         Role role = Role.builder().resource(resource).name(param.getName()).build();
@@ -24,6 +28,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @CacheEvict(value = Role.RESOURCE_NAME, key = "#param.resourceId")
     public void delete(RoleParam.Delete param) {
         Resource resource = Resource.builder().id(param.getResourceId()).build();
         Role role = Role.builder().resource(resource).build();
@@ -31,6 +36,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @CachePut(value = Role.RESOURCE_NAME, key = "#result.resource.id")
     public Role update(RoleParam.Update param) {
         Resource resource = Resource.builder().id(param.getResourceId()).build();
         Role role = Role.builder().resource(resource).name(param.getName()).build();
@@ -39,6 +45,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Cacheable(value = Role.RESOURCE_NAME, key = "#param.resourceId")
     public Role query(RoleParam.Query param) {
         Resource resource = Resource.builder().id(param.getResourceId()).build();
         Role role = roleDao.getRoleByResource(resource);

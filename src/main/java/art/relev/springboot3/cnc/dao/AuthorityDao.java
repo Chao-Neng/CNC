@@ -4,5 +4,5 @@ import art.relev.springboot3.cnc.exclude.CNCDao;
 import art.relev.springboot3.cnc.model.Authority;
 
 public interface AuthorityDao extends CNCDao<Authority> {
-    Authority getAuthorityByName(String name);
+    Authority getAuthorityByNameAndEndpointName(String name, String endpointName);
 }

@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Schema(description = "板块")
 public class Chunk implements CNCResource {
     public static final String RESOURCE_NAME = "chunk";
-    public static final String[] PARENT_RESOURCE_NAME_LIST = new String[]{null, "chunk"};
+    public static final String[] PARENT_RESOURCE_NAME_ARRAY = new String[]{null, "chunk"};
     @Id
     @Schema(description = "板块ID")
     private Long id;
@@ -26,7 +26,7 @@ public class Chunk implements CNCResource {
     @JoinColumn(name = "f_resource_id")
     @Schema(description = "资源")
     private Resource resource;
-    @Column(name = "f_name", unique = true, nullable = false)
+    @Column(name = "f_name", nullable = false)
     @Schema(description = "板块名称")
     private String name;
     @Column(name = "f_description", nullable = false, columnDefinition = "TEXT")

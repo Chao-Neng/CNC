@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Schema(description = "文章")
 public class Article implements CNCResource {
     public static final String RESOURCE_NAME = "article";
-    public static final String[] PARENT_RESOURCE_NAME_LIST = new String[]{"chunk"};
+    public static final String[] PARENT_RESOURCE_NAME_ARRAY = new String[]{"chunk"};
     @Id
     @Schema(description = "文章ID")
     private Long id;

@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Schema(description = "角色")
 public class Role implements CNCResource {
     public static final String RESOURCE_NAME = "role";
-    public static final String[] PARENT_RESOURCE_NAME_LIST = new String[]{null};
+    public static final String[] PARENT_RESOURCE_NAME_ARRAY = new String[]{null};
     @Id
     @Schema(description = "角色ID")
     private Long id;

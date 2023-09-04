@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,8 +17,9 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "t_resource")
+@NamedEntityGraph(name = "resourceIdGraph", attributeNodes = @NamedAttributeNode("id"))
 @Schema(description = "资源")
-public class Resource {
+public class Resource implements Serializable {
     public static final String RESOURCE_NAME = "resource";
     @Id
     @Column(name = "f_id")

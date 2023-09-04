@@ -2,10 +2,12 @@ package art.relev.springboot3.cnc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+@EnableCaching
 @SpringBootApplication
 @EnableJpaRepositories("art.relev.springboot3.cnc.dao")
 @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "art.relev.springboot3.cnc.dao.excluded.*"))

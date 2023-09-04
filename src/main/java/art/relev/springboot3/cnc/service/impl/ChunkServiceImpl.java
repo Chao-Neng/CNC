@@ -7,6 +7,9 @@ import art.relev.springboot3.cnc.param.ChunkParam;
 import art.relev.springboot3.cnc.service.ChunkService;
 import art.relev.springboot3.cnc.service.ResourceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +19,7 @@ public class ChunkServiceImpl implements ChunkService {
     private final ResourceService resourceService;
 
     @Override
+    @CachePut(value = Chunk.RESOURCE_NAME, key = "#result.resource.id")
     public Chunk create(ChunkParam.Create param) {
         Resource resource = resourceService.from(param);
         Chunk chunk = Chunk.builder().resource(resource).name(param.getName()).description(param.getDescription()).build();
@@ -24,6 +28,7 @@ public class ChunkServiceImpl implements ChunkService {
     }
 
     @Override
+    @CacheEvict(value = Chunk.RESOURCE_NAME, key = "#param.resourceId")
     public void delete(ChunkParam.Delete param) {
         Resource resource = Resource.builder().id(param.getResourceId()).build();
         Chunk chunk = Chunk.builder().resource(resource).build();
@@ -31,6 +36,7 @@ public class ChunkServiceImpl implements ChunkService {
     }
 
     @Override
+    @CachePut(value = Chunk.RESOURCE_NAME, key = "#result.resource.id")
     public Chunk update(ChunkParam.Update param) {
         Resource resource = Resource.builder().id(param.getResourceId()).build();
         Chunk chunk = Chunk.builder().resource(resource).name(param.getName()).description(param.getDescription()).build();
@@ -39,6 +45,7 @@ public class ChunkServiceImpl implements ChunkService {
     }
 
     @Override
+    @Cacheable(value = Chunk.RESOURCE_NAME, key = "#param.resourceId")
     public Chunk query(ChunkParam.Query param) {
         Resource resource = Resource.builder().id(param.getResourceId()).build();
         Chunk chunk = chunkDao.getChunkByResource(resource);

@@ -18,19 +18,25 @@ import java.util.List;
 
 public class ResourceParam {
     private static final String RESOURCE_NAME = Resource.RESOURCE_NAME;
-    private static final String[] PARENT_RESOURCE_NAME_LIST = new String[0];
+    private static final String[] PARENT_RESOURCE_NAME_ARRAY = new String[0];
 
+    @Data
     private static abstract class AbstractParam implements CNCParam {
-        @Override
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
-
-        @Override
         @JsonIgnore
-        public String[] getParentResourceNameList() {
-            return PARENT_RESOURCE_NAME_LIST;
-        }
+        private String resourceName = RESOURCE_NAME;
+        @JsonIgnore
+        private String[] parentResourceNameArray = PARENT_RESOURCE_NAME_ARRAY;
+    }
+
+    @Data
+    @Schema(name = "QueryResourceParam", description = "查询资源参数")
+    public static class Query extends AbstractParam {
+        private static final String AUTHORITY_NAME = "queryChild";
+        @NotNull(message = "资源ID不能为空")
+        @Schema(description = "资源ID")
+        private Long resourceId;
+        @JsonIgnore
+        private String authorityName = AUTHORITY_NAME;
     }
 
     @Data
@@ -40,6 +46,7 @@ public class ResourceParam {
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
+        @JsonIgnore(value = false)
         @Schema(description = "资源名称")
         private String resourceName;
         @Schema(description = "页码")
@@ -48,6 +55,13 @@ public class ResourceParam {
         @Schema(description = "页容量")
         private Integer pageSize = 10;
         // TODO 排序
+        @JsonIgnore
+        private String authorityName = AUTHORITY_NAME;
+
+        @Override
+        public String getEndpointName() {
+            return RESOURCE_NAME;
+        }
 
         @Override
         public Predicate toPredicate(Root<Resource> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
@@ -57,18 +71,6 @@ public class ResourceParam {
                 predicateList.add(criteriaBuilder.equal(root.get("resourceName"), resourceName));
             }
             return criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()]));
-        }
-
-        @Override
-        @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
-
-        @Override
-        @JsonIgnore
-        public Long getParentResourceId() {
-            return null;
         }
     }
 }

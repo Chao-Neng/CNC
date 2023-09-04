@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         map.put("userResource", user.getResource());
         String token = jwtService.encode(map);
         // TODO: 过期时间不准确
-        redisTemplate.opsForValue().set("TOKEN_" + token, user.getResource().getResourceName(), 1, TimeUnit.DAYS);
+        redisTemplate.opsForValue().set("token::" + token, user.getResource().getResourceName(), 1, TimeUnit.DAYS);
         return token;
     }
 

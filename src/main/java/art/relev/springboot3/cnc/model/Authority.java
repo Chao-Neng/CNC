@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,9 +16,9 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "t_authority", uniqueConstraints = @UniqueConstraint(columnNames = {"f_name", "f_resource_name"}))
+@Table(name = "t_authority", uniqueConstraints = @UniqueConstraint(columnNames = {"f_name", "f_endpoint_name"}))
 @Schema(description = "权限")
-public class Authority {
+public class Authority implements Serializable {
     @Id
     @Column(name = "f_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +27,9 @@ public class Authority {
     @Column(name = "f_name", nullable = false)
     @Schema(description = "权限名称")
     private String name;
-    @Column(name = "f_resource_name", nullable = false)
-    @Schema(description = "资源名称")
-    private String resourceName;
+    @Column(name = "f_endpoint_name", nullable = false)
+    @Schema(description = "端点名称")
+    private String endpointName;
     @Column(name = "f_allow_owner")
     @Schema(description = "允许资源所属者")
     private Boolean allowOwner;

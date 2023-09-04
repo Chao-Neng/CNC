@@ -2,6 +2,7 @@ package art.relev.springboot3.cnc.component;
 
 import art.relev.springboot3.cnc.dao.AuthorityDao;
 import art.relev.springboot3.cnc.dao.ResourceDao;
+import art.relev.springboot3.cnc.exclude.CNCCreateParam;
 import art.relev.springboot3.cnc.exclude.CNCDao;
 import art.relev.springboot3.cnc.exclude.CNCParam;
 import art.relev.springboot3.cnc.exclude.CNCResource;
@@ -34,10 +35,10 @@ public class AuthorityCheck {
             return false;
         }
         String authorityName = param.getAuthorityName();
-        String resourceName = param.getResourceName();
-        Authority authority = authorityDao.getAuthorityByName(authorityName);
+        String endpointName = param.getEndpointName();
+        Authority authority = authorityDao.getAuthorityByNameAndEndpointName(authorityName, endpointName);
         if (authority == null) {
-            authority = Authority.builder().name(authorityName).resourceName(resourceName).allowOwner(defaultAllowOwner).blackListMode(defaultBlackListMode).build();
+            authority = Authority.builder().name(authorityName).endpointName(endpointName).allowOwner(defaultAllowOwner).blackListMode(defaultBlackListMode).build();
             authorityDao.save(authority);
         }
         for (Role item : authority.getRoleSet()) {
@@ -53,8 +54,8 @@ public class AuthorityCheck {
         if (authority.getAllowOwner()) {
             try {
                 Long resourceId = param.getResourceId();
-                if (resourceId == null) {
-                    resourceId = param.getParentResourceId();
+                if (resourceId == null && param instanceof CNCCreateParam createParam) {
+                    resourceId = createParam.getParentResourceId();
                 }
                 if (resourceId != null) {
                     Boolean result = checkResource(resourceId, user.getResource().getId());

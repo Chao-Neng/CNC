@@ -9,20 +9,14 @@ import lombok.Data;
 
 public class UserParam {
     private static final String RESOURCE_NAME = User.RESOURCE_NAME;
-    private static final String[] PARENT_RESOURCE_NAME_LIST = User.PARENT_RESOURCE_NAME_LIST;
+    private static final String[] PARENT_RESOURCE_NAME_ARRAY = User.PARENT_RESOURCE_NAME_ARRAY;
 
+    @Data
     private static abstract class AbstractParam implements CNCParam {
-        @Override
         @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
-
-        @Override
+        private String resourceName = RESOURCE_NAME;
         @JsonIgnore
-        public String[] getParentResourceNameList() {
-            return PARENT_RESOURCE_NAME_LIST;
-        }
+        private String[] parentResourceNameArray = PARENT_RESOURCE_NAME_ARRAY;
     }
 
     @Data
@@ -35,24 +29,10 @@ public class UserParam {
         @Schema(description = "用户密码")
         @NotBlank(message = "密码不能为空")
         private String password;
-
-        @Override
         @JsonIgnore
-        public Long getResourceId() {
-            return null;
-        }
-
-        @Override
+        private Long resourceId;
         @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
-
-        @Override
-        @JsonIgnore
-        public Long getParentResourceId() {
-            return null;
-        }
+        private String authorityName = AUTHORITY_NAME;
     }
 
     @Data
@@ -65,47 +45,19 @@ public class UserParam {
         @Schema(description = "用户密码")
         @NotBlank(message = "密码不能为空")
         private String password;
-
-        @Override
         @JsonIgnore
-        public Long getResourceId() {
-            return null;
-        }
-
-        @Override
+        private Long resourceId;
         @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
-
-        @Override
-        @JsonIgnore
-        public Long getParentResourceId() {
-            return null;
-        }
+        private String authorityName = AUTHORITY_NAME;
     }
 
     @Data
     @Schema(name = "LogoutUserParam", description = "登出用户参数")
     public static class Logout extends AbstractParam {
         private static final String AUTHORITY_NAME = "logout";
-
-        @Override
         @JsonIgnore
-        public Long getResourceId() {
-            return null;
-        }
-
-        @Override
+        private Long resourceId;
         @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
-
-        @Override
-        @JsonIgnore
-        public Long getParentResourceId() {
-            return null;
-        }
+        private String authorityName = AUTHORITY_NAME;
     }
 }

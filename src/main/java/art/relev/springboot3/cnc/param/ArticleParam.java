@@ -1,5 +1,6 @@
 package art.relev.springboot3.cnc.param;
 
+import art.relev.springboot3.cnc.exclude.CNCCreateParam;
 import art.relev.springboot3.cnc.exclude.CNCParam;
 import art.relev.springboot3.cnc.model.Article;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,25 +12,19 @@ import org.hibernate.validator.constraints.Length;
 
 public class ArticleParam {
     private static final String RESOURCE_NAME = Article.RESOURCE_NAME;
-    private static final String[] PARENT_RESOURCE_NAME_LIST = Article.PARENT_RESOURCE_NAME_LIST;
+    private static final String[] PARENT_RESOURCE_NAME_ARRAY = Article.PARENT_RESOURCE_NAME_ARRAY;
 
+    @Data
     private static abstract class AbstractParam implements CNCParam {
-        @Override
         @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
-
-        @Override
+        private String resourceName = RESOURCE_NAME;
         @JsonIgnore
-        public String[] getParentResourceNameList() {
-            return PARENT_RESOURCE_NAME_LIST;
-        }
+        private String[] parentResourceNameArray = PARENT_RESOURCE_NAME_ARRAY;
     }
 
     @Data
     @Schema(name = "CreateArticleParam", description = "创建文章参数")
-    public static class Create extends AbstractParam {
+    public static class Create extends AbstractParam implements CNCCreateParam {
         private static final String AUTHORITY_NAME = "create";
         @NotBlank(message = "文章标题不能为空")
         @Length(max = 64, message = "文章标题长度超过64")
@@ -41,18 +36,8 @@ public class ArticleParam {
         @NotNull(message = "文章所属资源不能为空")
         @Schema(description = "文章所属资源ID")
         private Long parentResourceId;
-
-        @Override
         @JsonIgnore
-        public Long getResourceId() {
-            return null;
-        }
-
-        @Override
-        @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
+        private String authorityName = AUTHORITY_NAME;
     }
 
     @Data
@@ -62,18 +47,8 @@ public class ArticleParam {
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
-
-        @Override
         @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
-
-        @Override
-        @JsonIgnore
-        public Long getParentResourceId() {
-            return null;
-        }
+        private String authorityName = AUTHORITY_NAME;
     }
 
     @Data
@@ -90,18 +65,8 @@ public class ArticleParam {
         @NotBlank(message = "文章内容不能为空")
         @Schema(description = "文章内容")
         private String content;
-
-        @Override
         @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
-
-        @Override
-        @JsonIgnore
-        public Long getParentResourceId() {
-            return null;
-        }
+        private String authorityName = AUTHORITY_NAME;
     }
 
     @Data
@@ -111,17 +76,7 @@ public class ArticleParam {
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
-
-        @Override
         @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
-
-        @Override
-        @JsonIgnore
-        public Long getParentResourceId() {
-            return null;
-        }
+        private String authorityName = AUTHORITY_NAME;
     }
 }

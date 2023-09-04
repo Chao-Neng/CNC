@@ -1,5 +1,6 @@
 package art.relev.springboot3.cnc.param;
 
+import art.relev.springboot3.cnc.exclude.CNCCreateParam;
 import art.relev.springboot3.cnc.exclude.CNCParam;
 import art.relev.springboot3.cnc.model.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,48 +12,28 @@ import org.hibernate.validator.constraints.Length;
 
 public class RoleParam {
     private static final String RESOURCE_NAME = Role.RESOURCE_NAME;
-    private static final String[] PARENT_RESOURCE_NAME_LIST = Role.PARENT_RESOURCE_NAME_LIST;
+    private static final String[] PARENT_RESOURCE_NAME_ARRAY = Role.PARENT_RESOURCE_NAME_ARRAY;
 
+    @Data
     private static abstract class AbstractParam implements CNCParam {
-        @Override
         @JsonIgnore
-        public String getResourceName() {
-            return RESOURCE_NAME;
-        }
-
-        @Override
+        private String resourceName = RESOURCE_NAME;
         @JsonIgnore
-        public String[] getParentResourceNameList() {
-            return PARENT_RESOURCE_NAME_LIST;
-        }
+        private String[] parentResourceNameArray = PARENT_RESOURCE_NAME_ARRAY;
     }
 
     @Data
     @Schema(name = "CreateRoleParam", description = "创建角色参数")
-    public static class Create extends AbstractParam {
+    public static class Create extends AbstractParam implements CNCCreateParam {
         private static final String AUTHORITY_NAME = "create";
         @NotBlank(message = "角色名称不能为空")
         @Length(max = 64, message = "角色名称长度超过64")
         @Schema(description = "角色名称")
         private String name;
-
-        @Override
         @JsonIgnore
-        public Long getResourceId() {
-            return null;
-        }
-
-        @Override
+        private String authorityName = AUTHORITY_NAME;
         @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
-
-        @Override
-        @JsonIgnore
-        public Long getParentResourceId() {
-            return null;
-        }
+        private Long parentResourceId;
     }
 
     @Data
@@ -62,18 +43,8 @@ public class RoleParam {
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
-
-        @Override
         @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
-
-        @Override
-        @JsonIgnore
-        public Long getParentResourceId() {
-            return null;
-        }
+        private String authorityName = AUTHORITY_NAME;
     }
 
     @Data
@@ -87,18 +58,8 @@ public class RoleParam {
         @Length(max = 64, message = "角色名称长度超过64")
         @Schema(description = "角色名称")
         private String name;
-
-        @Override
         @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
-
-        @Override
-        @JsonIgnore
-        public Long getParentResourceId() {
-            return null;
-        }
+        private String authorityName = AUTHORITY_NAME;
     }
 
     @Data
@@ -108,17 +69,7 @@ public class RoleParam {
         @NotNull(message = "资源ID不能为空")
         @Schema(description = "资源ID")
         private Long resourceId;
-
-        @Override
         @JsonIgnore
-        public String getAuthorityName() {
-            return AUTHORITY_NAME;
-        }
-
-        @Override
-        @JsonIgnore
-        public Long getParentResourceId() {
-            return null;
-        }
+        private String authorityName = AUTHORITY_NAME;
     }
 }
