@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionController {
     @ExceptionHandler(Exception.class)
     public Result<?> exception(Exception exception) {
-        log.error("Exception: " + exception.getMessage());
+        // log.error("Exception: " + exception.getMessage());
+        exception.printStackTrace();
         return ResultMessage.ERROR.build();
     }
 
@@ -20,7 +21,8 @@ public class ExceptionController {
     public Result<?> appException(CNCException cncException) {
         ResultMessage resultMessage = cncException.getResultMessage();
         Result<?> result = resultMessage.build();
-        log.warn("CNCException: " + result.getMessage());
+        // log.warn("CNCException: " + result.getMessage());
+        cncException.printStackTrace();
         return result;
     }
 }
